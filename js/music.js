@@ -1,151 +1,29 @@
-(function () {
-
-    let getLyric = id => {
-        return new Promise((resolve, reject) => {
-            fetch("https://api.imjad.cn/cloudmusic/?type=lyric&id=" + id).then(res => {
-                return res.json()
-            }).then(data => {
-                // console.log(data)
-                if (!data.lrc) {
-                    data = Object.assign(data, {
-                        lrc: {
-                            lyric: '[00:00.00]找不到歌词的说…(⊙﹏⊙)[99:00.00]'
-                        },
-                        tlyric: {
-                            lyric: '[00:00.00]翻译不存在的说…╮(╯▽╰)╭[99:00.00]'
-                        }
-                    })
-                }
-                let obj = {
-                    lyric: data.lrc.lyric,
-                    tlyric: data.tlyric.lyric
-                }
-                resolve(obj);
-            })
-        })
+const ap = new APlayer({
+  container: document.getElementById('aplayer'),
+  autoplay: false, //自动播放
+  listFolded: true, //播放列表默认折叠
+  listMaxHeight: 90, //播放列表最大高度
+  order: 'list', //音频循环顺序, 可选值: 'list', 'random'
+  loop: 'all', //音频循环播放, 可选值: 'all', 'one', 'none'
+  theme: '#e9e9e9', //切换音频时的主题色，优先级低于audio.theme
+  preload: 'none', //音频预加载，可选值: 'none', 'metadata', 'auto'
+  mutex: true, //互斥，阻止多个播放器同时播放，当前播放器播放时暂停其他播放器
+  lrcType: 3, //歌词格式，可选值：3（LRC文件歌词格式），1（JS字符串歌词格式）
+  volume: 0.7, //默认音量，请注意播放器会记忆用户设置，用户手动设置音量后默认音量即失效
+  fixed: true, //吸底模式（fixed:true），迷你模式（mini:true），普通模式（注释此行或者设置fixed:false）
+  audio: [{
+      name: '平凡之路',
+      artist: '朴树',
+      lrc: '/downloads/lrc/平凡之路-朴树.lrc',
+      cover: 'http://p2.music.126.net/W_5XiCv3rGS1-J7EXpHSCQ==/18885211718782327.jpg?param=300x300',
+      url: 'http://fs.open.kugou.com/cd5cbe8edb012e4f77b0857cefc0956e/5c66accf/G097/M08/0A/1F/AYcBAFkQGpOAMUpuAEm-3SlWMyk951.mp3'
+    },
+    {
+      name: '后会无期',
+      artist: 'G.E.M.邓紫棋',
+      lrc: '/downloads/lrc/后会无期-G.E.M.邓紫棋.lrc',
+      cover: 'http://p1.music.126.net/vpvPajo3kn88nHc7jUjeWQ==/5974746185758035.jpg?param=300x300',
+      url: 'http://m10.music.126.net/20190215193113/e5afc8b5376136029366f2053cf30f85/ymusic/2c87/6ec3/582e/0d572dcc04f8de34133c0f364b74c30c.mp3'
     }
-
-    function loadcplayer() {
-        if (typeof window.cplayerList === 'undefined') window.cplayerList = {};
-        if (typeof window.cplayerList["cplayer-63111106"] !== 'undefined') return;
-        if (!cplayer.prototype.add163) cplayer.prototype.add163 = async function add163(id) {
-            if (!id) throw new Error("Unable Property.");
-            let lyric = await getLyric(id);
-            // console.log(lyric)
-
-            return fetch("https://api.imjad.cn/cloudmusic/?type=detail&id=" + id).then(function (res) {
-                return res.json()
-            }).then(function (data) {
-                let obj = {
-                    name: data.songs[0].name,
-                    artist: data.songs[0].ar.map(function (ar) {
-                        return ar.name
-                    }).join(','),
-                    poster: data.songs[0].al.picUrl,
-                    lyric: lyric.lyric,
-                    sublyric: lyric.tlyric,
-                    src: 'https://api.imjad.cn/cloudmusic/?type=song&raw=true&id=' + id
-                }
-                this.add(obj);
-                return obj;
-            }.bind(this))
-        }
-
-        window.cplayerList["cplayer-63111106"] = new cplayer({
-            element: document.getElementById("cplayer-63111106"),
-            playlist: [{
-                "name": "loading...",
-                "artist": "loading..."
-            }],
-            generateBeforeElement: false,
-            deleteElementAfterGenerate: false,
-            autoplay: false,
-            zoomOutKana: true,
-            style: `c-player {
-                      font-size: 16px !important;
-                      position: relative;
-                      left: 50%;
-                      transform: translateX(-50%);
-                      width: auto;
-                      max-width: 550px;
-                      margin: 30px auto;
-                    }
-                    c-player .cp-controls{
-                      user-select: none;
-                    }
-                    c-player .cp-lyric{
-                      width: 100%;
-                      margin: 0.41667em 0;
-                    }
-                    c-player .cp-play-button .cp-play-icon.cp-play-icon-paused {
-                      margin-left: 0.8em;
-                    }
-                    @media (max-width: 768px) {
-                      c-player{
-                        font-size: 12px !important;
-                        left: auto;
-                        transform: none;
-                        width: 100%;
-                        margin: 10px auto;
-                      }
-                      c-player .cp-mainbody{
-                        min-height: 5.16667em;
-                      }
-                      c-player .cp-poster{
-                        width: 5.16667em;
-                        height: 5.16667em;
-                      }
-                      c-player .cp-center-container{
-                        height: 5.16667em;
-                      }
-                      c-player .cp-play-button, c-player .cp-volume-button, c-player .cp-prev-button, c-player .cp-list-button, c-player .cp-mode-button, c-player .cp-next-button{
-                        width: 1.54167em;
-                        height: 1.54167em;
-                      }
-                      c-player .cp-icon, c-player .cp-prev-icon, c-player .cp-next-icon, c-player .cp-volume-icon, c-player .cp-random-icon, c-player .cp-single-icon, c-player .cp-loop-icon, c-player .cp-list-icon{
-                        height: 1.54167em;
-                        width: 1.54167em;
-                      }
-                      c-player .cp-play-button{
-                        height: 2.8em;
-                        width: 2.8em;
-                      }
-                      c-player .cp-play-button .cp-play-icon{
-                        margin: 0.8em;
-                      }
-                      c-player .cp-play-button .cp-play-icon.cp-play-icon-paused {
-                        margin: 0.7875em;
-                        margin-left: 1em;
-                      }
-                      c-player .cp-volume-icon {
-                        width: 1.76667em;
-                      }
-                      c-player .cp-list-button {
-                        width: 1.54167em;
-                        height: 1.54167em;
-                      }
-                      c-player .cp-mode-button {
-                        width: 1.54167em;
-                        height: 1.54167em;
-                      }
-                    }
-                    `
-        });
-
-        window.cplayerList["cplayer-63111106"].add163(1356233927), window.cplayerList["cplayer-63111106"].add163(1356237497), window.cplayerList["cplayer-63111106"].add163(1356237499), window.cplayerList["cplayer-63111106"].add163(1356233951), window.cplayerList["cplayer-63111106"].add163(1356237498), window.cplayerList["cplayer-63111106"].add163(1356237501), window.cplayerList["cplayer-63111106"].add163(1356237500), window.cplayerList["cplayer-63111106"].add163(1356233953), window.cplayerList["cplayer-63111106"].add163(1356233949)
-
-        let player = window.cplayerList["cplayer-63111106"]
-        player.to(1)
-        player.remove(player.playlist[0])
-    }
-
-    if (typeof window.cplayer === 'undefined' && !document.getElementById("cplayer-script")) {
-        var js = document.createElement("script");
-        js.src = 'https://cdn.jsdelivr.net/gh/MoePlayer/cPlayer/dist/cplayer.js';
-        js.id = "cplayer-script";
-        js.addEventListener("load", loadcplayer);
-        document.body.appendChild(js);
-    } else {
-        window.addEventListener("load", loadcplayer);
-    }
-})()
+  ]
+});
