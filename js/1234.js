@@ -1,9 +1,0 @@
-<meting-js
-	server="netease"
-	type="playlist"
-    id="60198"
-    listfolded="true"
-    order="list"
-	fixed="true"
-    theme="#2196f3">
-</meting-js>
