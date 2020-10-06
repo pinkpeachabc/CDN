@@ -26,14 +26,14 @@
             if (Reflect.construct.sham) return !1;
             if ("function" == typeof Proxy) return !0;
             try {
-                return Date.prototype.toString.call(Reflect.construct(Date, [], (function () {}))), !0
+                return Date.prototype.toString.call(Reflect.construct(Date, [], (function () { }))), !0
             } catch (t) {
                 return !1
             }
         }() ? Reflect.construct : function (t, e, n) {
             var o = [null];
             o.push.apply(o, e);
-            var a = new(Function.bind.apply(t, o));
+            var a = new (Function.bind.apply(t, o));
             return n && r(a, n.prototype), a
         }).apply(null, arguments)
     }
@@ -91,7 +91,7 @@
         foreground_color: "#333333",
         accent_color: '#2196f3',
         border_color: "#e0e0e0",
-        background: "https://s1.ax1x.com/2020/08/17/dVOcFJ.png",
+        background: "https://cdn.jsdelivr.net/gh/pinkpeachabc/images/Blog-imgs/light.png",
         sidebar_background: "#6699CC linear-gradient(to bottom,#66CCCC 0%,#6699CC 100%)",
         card_background: "#fff",
         highlight: ['#263238', '#2c393f', '#37474f', '#707880', '#c9ccd3', '#cdd3de', '#d5dbe5', '#ffffff', '#ec5f67', '#ea9560', '#ffcc00', '#8bd649', '#80cbc4', '#89ddff', '#82aaff', '#ec5f67'],
@@ -106,7 +106,7 @@
         foreground_color: "#d8d8d8",
         accent_color: '#666666',
         border_color: "#444",
-        background: "https://s1.ax1x.com/2020/08/17/dVOqfA.png",
+        background: "https://cdn.jsdelivr.net/gh/pinkpeachabc/images/Blog-imgs/dark.png",
         sidebar_background: "#262626",
         card_background: "#252525",
         highlight: ["#252525", "#252525", "#939393", "#585858", "#b8b8b8", "#d8d8d8", "#e8e8e8", "#f8f8f8", "#ab4642", "#dc9656", "#f7ca88", "#a1b56c", "#b8b8b8", "#7cafc2", "#ba8baf", "#a16946"],
@@ -117,7 +117,7 @@
             }
         },
         color: ["#262626", "#202020"]
-    }, ];
+    },];
     var l = ":host{display:block;margin:1rem auto;max-width:205px;line-height:1}:host div{display:-webkit-box;display:flex;flex-wrap:wrap;-webkit-box-pack:center;justify-content:center}:host a{margin:3px;width:2rem;height:2rem;border-radius:1rem;background-size:60px!important;font-size:1.5rem;cursor:pointer;-webkit-transition:-webkit-transform .15s;transition:-webkit-transform .15s;transition:transform .15s;transition:transform .15s,-webkit-transform .15s}:host a.current,:host a:hover{-webkit-transform:scale(1.1);transform:scale(1.1)}";
     ! function (t, e) {
         void 0 === e && (e = {});
